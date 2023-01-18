@@ -1,8 +1,14 @@
-# Dynamic Filter
-A Laravel library for rendering dynamic filters that provide input data for API calls.
+# Laravel Toolkit
+Adds macros to various Laravel classes and provides helper classes, as well as supercharged base classes.
 
 ## Requirements
-* PHP 7.1+
-* Laravel 5.6+
-* JQuery
-* Bootstrap
+* PHP 7.3+
+* Laravel 8.0+
+
+## Available tools
+
+### Collection Macros
+- `mapToInteger`
+```php
+collect(['1', '5', '-8'])->mapToInteger(); //[1, 5, -8]
+```
