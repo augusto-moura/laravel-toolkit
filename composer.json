@@ -1,0 +1,31 @@
+{
+    "name": "augusto-moura/laravel-toolkit",
+    "description": "Adds macros to various Laravel classes and provides helper classes, as well as supercharged base classes.",
+    "type": "library",
+	"license": "MIT",
+	"require": {
+		"php": ">= 7.3",
+		"laravel/framework": "^8.0|^9.0"
+	},
+    "require-dev": {
+        "orchestra/testbench": "^6.25"
+    },
+	"autoload": {
+		"psr-4": {
+			"AugustoMoura\\LaravelToolkit\\": "src/"
+		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"AugustoMoura\\LaravelToolkit\\Providers\\LaravelToolkitServiceProvider"
+			]
+		}
+	},
+    "authors": [
+        {
+            "name": "Augusto Moura",
+            "email": "augusto_moura40@hotmail.com"
+        }
+    ]
+}
