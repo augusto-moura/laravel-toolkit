@@ -86,7 +86,48 @@ class CollectionMacros
 			
 				$this->items = $new;
 				return $this;
-			}
+			},
+
+			'recursive' => function () {
+				/** @var Collection $this */
+				return $this->map(function ($value) {
+					if (is_array($value) || is_object($value)) {
+						return collect($value)->recursive();
+					}		
+					return $value;
+				});
+			},
+
+			'emptyStringsToNull' => function () {
+				/** @var Collection $this */
+				return $this->map(function ($value) {
+					if (is_string($value) && $value == '') {
+						return null;
+					}		
+					return $value;
+				});
+			},
+
+			'firstWhereHasMin' => function($propName){
+				/** @var Collection $this */
+				$menorQtd = $this->min($propName);
+				return $this->firstWhere($propName, $menorQtd);
+			},
+
+			'implodeWithDiffLastSeparator' => function($propName, $separators = null){
+				/** @var Collection $this */
+				if($separators === null){
+					$separators = $propName;
+					list($separatorUntilLast, $separatorLast) = $separators;
+					$imploded = $this->implode($separatorUntilLast);
+				}
+				else{
+					list($separatorUntilLast, $separatorLast) = $separators;
+					$imploded = $this->implode($propName, $separatorUntilLast);
+				}
+
+				return \Illuminate\Support\Str::replaceLast($separatorUntilLast, $separatorLast, $imploded);
+			},
 		];
 
 		foreach($macros as $macroName => $macroFunction){

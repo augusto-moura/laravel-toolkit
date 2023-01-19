@@ -88,3 +88,55 @@ collect(['a', 'b', 'c'])
 	->insertAfter('b', 'pause');
 //['a', 'b', 'pause', 'c']
 ```
+
+- `recursive`
+```php
+$collection = collect([
+	0 => 'a', 
+	1 => 'b', 
+	2 => [1,2,3]
+]);
+$collection->recursive();
+/* 
+Collection([
+	0 => 'a', 
+	1 => 'b', 
+	2 => Collection([1,2,3])
+])
+*/
+```
+
+- `emptyStringsToNull`
+```php
+collect(['foo', '', 'bar', ''])
+	->emptyStringsToNull();
+//['foo', null, 'bar', null]
+```
+
+- `firstWhereHasMin`
+```php
+$collection = collect([
+	['name' => 'John', 'age' => 25],
+	['name' => 'Jane', 'age' => 30],
+	['name' => 'Bob', 'age' => 25],
+	['name' => 'Joseph', 'age' => 29],
+]);
+$collection->firstWhereHasMin('age');
+//['name' => 'John', 'age' => 25];
+```
+
+- `implodeWithDiffLastSeparator`
+```php
+$collection = collect([
+	['name' => 'John', 'age' => 25],
+	['name' => 'Jane', 'age' => 30],
+	['name' => 'Bob', 'age' => 25],
+	['name' => 'Joseph', 'age' => 29],
+]);
+$collection->implodeWithDiffLastSeparator('name', [', ', ' and ']);
+//John, Jane, Bob and Joseph
+
+collect(['John', 'Jane', 'Bob', 'Joseph'])
+	->implodeWithDiffLastSeparator([', ', ' and ']);
+//John, Jane, Bob and Joseph
+```

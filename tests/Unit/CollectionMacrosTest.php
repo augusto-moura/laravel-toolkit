@@ -1,6 +1,7 @@
 <?php
 
 use AugustoMoura\LaravelToolkit\Providers\LaravelToolkitServiceProvider;
+use Illuminate\Support\Collection;
 use Orchestra\Testbench\TestCase;
 
 class CollectionMacrosTest extends TestCase
@@ -135,5 +136,96 @@ class CollectionMacrosTest extends TestCase
 		);
     }
 
+	public function test_recursive()
+    {
+		$collection = collect([
+			0 => 'a', 
+			1 => 'b', 
+			2 => [1,2,3]
+		])
+			->recursive();
+
+		$this->assertInstanceOf(Collection::class, $collection);
+		$this->assertEquals('a', $collection->get(0));
+		$this->assertEquals('b', $collection->get(1));
+		$this->assertInstanceOf(Collection::class, $collection->get(2));
+
+		$subCollection = $collection->get(2);
+		$this->assertEquals(
+			[1, 2, 3],
+			$subCollection->toArray()
+		);
+    }
+
+	public function test_empty_strings_to_null()
+	{
+		$collection = new Collection(['foo', '', 'bar', '']);
+		$expected = new Collection(['foo', null, 'bar', null]);
+	
+		$this->assertEquals($expected, $collection->emptyStringsToNull());
+	}
+
+	public function test_first_where_has_min()
+	{
+		// Test array of arrays
+		$collection = new Collection([
+            ['name' => 'John', 'age' => 25],
+            ['name' => 'Jane', 'age' => 30],
+            ['name' => 'Bob', 'age' => 25],
+            ['name' => 'Joseph', 'age' => 29],
+        ]);
+
+        $expected = ['name' => 'John', 'age' => 25];
+        $this->assertEquals($expected, $collection->firstWhereHasMin('age'));
+
+		 // Test array of anonymous objects
+		 $collection = new Collection([
+            (object) ['name' => 'John', 'age' => 25],
+            (object) ['name' => 'Jane', 'age' => 30],
+            (object) ['name' => 'Bob', 'age' => 25],
+            (object) ['name' => 'Joseph', 'age' => 29],
+        ]);
+
+        $expected = (object) ['name' => 'John', 'age' => 25];
+        $this->assertEquals($expected, $collection->firstWhereHasMin('age'));
+
+        // Test array of instantiated classes
+		function getClassObject($name, $age){
+			return new class($name, $age){
+				public $name;
+				public $age;
+				function __construct($name, $age) {
+					$this->name = $name;
+					$this->age = $age;
+				}
+			};
+		}
+
+        $collection = new Collection([
+            getClassObject('John', 25),
+            getClassObject('Jane', 30),
+            getClassObject('Bob', 25),
+            getClassObject('Joseph', 29),
+        ]);
+
+        $expected = getClassObject('John', 25);
+        $this->assertEquals($expected, $collection->firstWhereHasMin('age'));
+	}
+
+	public function test_implode_with_diff_last_separator()
+	{
+		$collection = new Collection([
+            (object) ['name' => 'John'],
+            (object) ['name' => 'Jane'],
+            (object) ['name' => 'Bob'],
+            (object) ['name' => 'Joseph'],
+        ]);
+        $expected = 'John, Jane, Bob and Joseph';
+        $this->assertEquals($expected, $collection->implodeWithDiffLastSeparator('name', [', ', ' and ']));
+
+		$collection = new Collection(['John', 'Jane', 'Bob', 'Joseph']);
+        $expected = 'John, Jane, Bob and Joseph';
+        $this->assertEquals($expected, $collection->implodeWithDiffLastSeparator([', ', ' and ']));
+	}
 
 }
