@@ -58,6 +58,35 @@ class CollectionMacros
 						return $collection->contains($element);
 					});
 			},
+
+			'prependKeys' => function(string $string){
+				/** @var Collection $this */
+				return $this->mapWithKeys(function($item, $key) use($string){
+					return ["{$string}{$key}" => $item];
+				});
+			},
+
+			'insertAfter' => function ($target, $value) {
+				/** @var Collection $this */
+				$new = [];
+				$offset = 0;
+				$oldKey = 0;
+
+				while($oldKey < count($this->items)){
+					$old = $this->items[$oldKey];
+					$new[$oldKey + $offset] = $old;
+
+					if($old == $target){
+						$new[$oldKey + $offset + 1] = $value;
+						$offset++;
+					}
+					
+					$oldKey++;
+				}
+			
+				$this->items = $new;
+				return $this;
+			}
 		];
 
 		foreach($macros as $macroName => $macroFunction){

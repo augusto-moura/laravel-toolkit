@@ -65,3 +65,26 @@ $collection->containsAll([1, 2, 3, 4]); //true
 $collection->containsAll([1, -1, 2, 3]); //false
 $collection->containsAll([1, 2, 3, 4, 5]); //false
 ```
+
+- `prependKeys`
+```php
+$collection = collect([
+	'aaa' => 1,
+	'bbb' => 2,
+	
+]);
+$collection->prependKeys('##');
+/*
+[
+	'##aaa' => 1,
+	'##bbb' => 2, 
+]
+*/
+```
+
+- `insertAfter`
+```php
+collect(['a', 'b', 'c'])
+	->insertAfter('b', 'pause');
+//['a', 'b', 'pause', 'c']
+```

@@ -83,4 +83,57 @@ class CollectionMacrosTest extends TestCase
 		$this->assertFalse($collection->containsAll([1, 2, 3, 10]));
 		$this->assertFalse($collection->containsAll([1, -1, 2, 3]));
     }
+
+	public function test_prepend_keys()
+    {
+		$collection = collect([
+			'aaa' => 1,
+			'bbb' => 2,
+		]);
+		$this->assertEquals(
+			[
+				'##aaa' => 1,
+				'##bbb' => 2,
+			],
+			$collection->prependKeys('##')->toArray()
+		);
+
+		$collection = collect(['value', 'other']);
+		$this->assertEquals(
+			[
+				'##0' => 'value',
+				'##1' => 'other',
+			],
+			$collection->prependKeys('##')->toArray()
+		);
+    }
+
+	public function test_insert_after()
+    {
+		$collection = collect(['a', 'b', 'c']);
+		$this->assertEquals(
+			['a', 'b', 'pause', 'c'],
+			$collection->insertAfter('b', 'pause')->toArray()
+		);
+
+		$collection = collect([1, 2, 3]);
+		$this->assertEquals(
+			[1, 2, 'pause', 3],
+			$collection->insertAfter(2, 'pause')->toArray()
+		);
+
+		$collection = collect([1, 2, 2, 2, 3]);
+		$this->assertEquals(
+			[1, 2, 'pause', 2, 'pause', 2, 'pause', 3],
+			$collection->insertAfter(2, 'pause')->toArray()
+		);
+
+		$collection = collect([1, 2, 3]);
+		$this->assertEquals(
+			[1, 2, 3],
+			$collection->insertAfter(5, 'pause')->toArray()
+		);
+    }
+
+
 }
