@@ -140,3 +140,36 @@ collect(['John', 'Jane', 'Bob', 'Joseph'])
 	->implodeWithDiffLastSeparator([', ', ' and ']);
 //John, Jane, Bob and Joseph
 ```
+
+### Query Builder Macros
+
+- `whereAny`
+```php
+User::query()
+	->whereAny([
+		function($query){
+			$query->hasRole('Administrator');
+		},
+		function($query){
+			$query->where('is_owner', true);
+		},
+	])
+	->get();
+/*
+select * from users where (
+	*condition in local scope*
+	or
+	is_owner = true
+)
+*/
+``` 
+
+- `whereNot`
+```php
+User::query()
+	->whereNot(function($query){
+		$query->hasRole('Administrator');
+	})
+	->get();
+//select * from users where not ( *condition in local scope* )
+``` 
