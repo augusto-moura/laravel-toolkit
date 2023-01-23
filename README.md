@@ -6,6 +6,17 @@ Adds macros to various Laravel classes and provides helper classes, as well as s
 * Laravel 8.0+
 
 ## Installation
+In the `composer.json` file in the root of your Laravel project, add the following section:
+```
+"repositories": [
+	{
+		"type": "vcs",
+		"url": "https://github.com/augusto-moura/laravel-toolkit"
+	}
+],
+```
+
+Now run the command:
 ```
 composer require augusto-moura/laravel-toolkit
 ```
