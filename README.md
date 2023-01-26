@@ -184,3 +184,64 @@ User::query()
 	->get();
 //select * from users where not ( *condition in local scope* )
 ``` 
+
+### Validation rules
+
+- `Cpf`
+```php
+//in controller
+use AugustoMoura\LaravelToolkit\Rules\Cpf;
+
+request()->validate([
+	'cpf' => [new Cpf],
+]);
+
+//"40101887078" -> passes
+//"401.018.870-78" -> passes
+//"401.018.870-789" -> fails
+```
+
+- `HtmlNotEmpty`
+```php
+//in controller
+use AugustoMoura\LaravelToolkit\Rules\HtmlNotEmpty;
+
+request()->validate([
+	'message' => [new HtmlNotEmpty],
+]);
+
+//" " -> fails
+//" <br> " -> fails
+//"<p> <br> </p>" -> fails
+//"<p> First line<br>Second line </p>" -> passes
+```
+
+- `MaxCharactersinHtml`
+```php
+//in controller
+use AugustoMoura\LaravelToolkit\Rules\MaxCharactersinHtml;
+
+request()->validate([
+	'message' => [new MaxCharactersinHtml(3)],
+]);
+
+//"123" -> passes
+//"<p>123</p>" -> passes
+//"1234" -> fails
+//"<p>1234</p>" -> fails
+```
+
+- `MaxWordsinHtml`
+```php
+//in controller
+use AugustoMoura\LaravelToolkit\Rules\MaxWordsinHtml;
+
+request()->validate([
+	'message' => [new MaxWordsinHtml(2)],
+]);
+
+//" abc def " -> passes
+//"<p> abc def </p>" -> passes
+//"abc def ghi" -> fails
+//"<p> abc def ghi </p>" -> fails
+```
