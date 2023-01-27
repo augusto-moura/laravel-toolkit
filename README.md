@@ -23,8 +23,9 @@ composer require augusto-moura/laravel-toolkit
 
 ## Available tools
 
-### Collection Macros
-
+<details>
+<summary>Collection Macros</summary>
+  
 - `mapToInteger`
 ```php
 collect(['1', '5', '-8'])->mapToInteger();
@@ -151,8 +152,10 @@ collect(['John', 'Jane', 'Bob', 'Joseph'])
 	->implodeWithDiffLastSeparator([', ', ' and ']);
 //John, Jane, Bob and Joseph
 ```
+</details>
 
-### Query Builder Macros
+<details>
+<summary>Query Builder Macros</summary>
 
 - `whereAny`
 ```php
@@ -184,8 +187,27 @@ User::query()
 	->get();
 //select * from users where not ( *condition in local scope* )
 ``` 
+</details>
 
-### Validation rules
+<details>
+<summary>TestResponse Macros</summary>
+
+- `assertContentHtmlMatchesSelector`
+```php
+//in test class
+$response = $this->get('/login');
+
+//assert that selector has at least one match in HTML
+$response->assertContentHtmlMatchesSelector('input[name=login]') 
+	->assertContentHtmlMatchesSelector('input[name=password]');
+
+//assert that selector has no match in HTML
+$response->assertContentHtmlMatchesSelector('button.logout-button', false);
+``` 
+</details>
+
+<details>
+<summary>Validation rules</summary>
 
 - `Cpf`
 ```php
@@ -245,3 +267,17 @@ request()->validate([
 //"abc def ghi" -> fails
 //"<p> abc def ghi </p>" -> fails
 ```
+</details>
+
+<details>
+<summary>Helper classes</summary>
+
+- `ViaCepAPI`
+```php
+use AugustoMoura\LaravelToolkit\Helpers\ViaCepAPI;
+
+$viaCepAPI = new ViaCepAPI;
+$addressObject = $viaCepApi->buscarCep('70100000');
+//EnderecoViaCep: {"cep": "70100-000","logradouro": "Praça dos Três Poderes","complemento": "","bairro": "Zona Cívico-Administrativa","localidade": "Brasília","uf": "DF","ibge": "5300108","gia": "","ddd": "61","siafi": "9701"}
+```
+</details>
