@@ -155,6 +155,30 @@ collect(['John', 'Jane', 'Bob', 'Joseph'])
 </details>
 
 <details>
+<summary>String and Stringable Macros</summary>
+
+- `titleWithSpaces`
+```php
+Str::titleWithSpaces('three fine words');
+Str::of('three fine words')->titleWithSpaces();
+//'Three Fine Words'
+
+Str::titleWithSpaces('threeWordsTogether');
+Str::of('threeWordsTogether')->titleWithSpaces();
+//'Three Words Together'
+```
+
+- `superTrim`
+```php
+$string = "\t\n\r \0\x0B\xC2\xA0text 123\t\n \r\0\x0B\xC2\xA0";
+
+Str::superTrim($string)
+Str::of($string)->superTrim();
+//'text 123'
+```
+</details>
+
+<details>
 <summary>Query Builder Macros</summary>
 
 - `whereAny`
