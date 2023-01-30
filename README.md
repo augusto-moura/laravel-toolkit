@@ -176,6 +176,19 @@ Str::superTrim($string)
 Str::of($string)->superTrim();
 //'text 123'
 ```
+
+- `wordWrapWithoutBreakingWords`
+```php
+Str::wordWrapWithoutBreakingWords('1234 12345', 5);
+Str::of('1234 12345')->wordWrapWithoutBreakingWords(5);
+//['1234', '12345']
+
+Str::wordWrapWithoutBreakingWords('1 2 12345', 5);
+//['1 2', '12345']
+
+Str::wordWrapWithoutBreakingWords('123456 12345', 5);
+// \LengthException thrown
+```
 </details>
 
 <details>

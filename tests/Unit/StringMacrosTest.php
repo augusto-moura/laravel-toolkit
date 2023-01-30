@@ -43,14 +43,45 @@ class StringMacrosTest extends TestCase
 		$this->testStringMacroForArray('superTrim', $inputAndExpected);
 	}
 
+    public function test_word_wrap_without_breaking_words()
+    {
+        $inputAndExpected = [
+			'1234 12345' => ['1234', '12345'],
+			'12345 12345' => ['12345', '12345'],
+			'1 2 3 12345' => ['1 2 3', '12345'],
+			'1 2 12345' => ['1 2', '12345'],
+			'12345 1 2 3 12345' => ['12345', '1 2 3', '12345'],
+		];
+
+		$this->testWordWrapWithoutBreakingWordsForArray(5, $inputAndExpected);
+
+		$this->expectException(\LengthException::class);
+
+		Str::wordWrapWithoutBreakingWords('123456 12345', 5);
+	}
+
 	private function testStringMacroForArray(string $macro, array $inputAndExpected)
 	{
 		foreach($inputAndExpected as $input => $expected) {
 			$this->assertEquals($expected, Str::$macro($input));
 			
-			$stringable = Str::of($input)->$macro($input);
+			$stringable = Str::of($input)->$macro();
 			$this->assertEquals($expected, (string) $stringable);
 			$this->assertInstanceOf(Stringable::class, $stringable);
+		}
+	}
+
+	private function testWordWrapWithoutBreakingWordsForArray(
+		int $charLimitPerLine, 
+		array $inputAndExpected
+	)
+	{
+		foreach($inputAndExpected as $input => $expected) {
+			$this->assertEquals($expected, Str::wordWrapWithoutBreakingWords($input, $charLimitPerLine));
+
+			$arrayParts = Str::of($input)->wordWrapWithoutBreakingWords($charLimitPerLine);
+			$this->assertIsArray($arrayParts);
+			$this->assertEquals($expected, $arrayParts);
 		}
 	}
 
