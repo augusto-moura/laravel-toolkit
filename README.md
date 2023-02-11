@@ -318,3 +318,18 @@ $addressObject = $viaCepApi->buscarCep('70100000');
 //EnderecoViaCep: {"cep": "70100-000","logradouro": "Praça dos Três Poderes","complemento": "","bairro": "Zona Cívico-Administrativa","localidade": "Brasília","uf": "DF","ibge": "5300108","gia": "","ddd": "61","siafi": "9701"}
 ```
 </details>
+
+<details>
+<summary>Mailables</summary>
+
+- `SimpleEmail`
+```php
+use AugustoMoura\LaravelToolkit\Mail\SimpleEmail;
+
+Mail::to('example@email.com')->queue(new SimpleEmail(
+	'E-mail title', 
+	'Body of the e-mail.', 
+	['path/to/attachment', 'path/to/attachment2']
+));
+```
+</details>

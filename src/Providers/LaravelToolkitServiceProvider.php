@@ -9,6 +9,11 @@ use Illuminate\Support\ServiceProvider;
 
 class LaravelToolkitServiceProvider extends ServiceProvider
 {
+	public function boot()
+	{
+		$this->loadViewsFrom(__DIR__.'/../../resources/views', 'am-laravel-toolkit');
+	}
+
 	public function register()
 	{
 		CollectionMacros::registerMacros();
