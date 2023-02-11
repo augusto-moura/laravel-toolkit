@@ -6,6 +6,7 @@ use AugustoMoura\LaravelToolkit\Rules\MaxCharactersInHtml;
 use AugustoMoura\LaravelToolkit\Rules\MaxWordsInHtml;
 use AugustoMoura\LaravelToolkit\Rules\HtmlNotEmpty;
 use AugustoMoura\LaravelToolkit\Rules\BrazilPhoneNumber;
+use AugustoMoura\LaravelToolkit\Rules\HourAndMinute;
 use AugustoMoura\LaravelToolkit\Traits\MakesAssertionsForValidationRules;
 
 class ValidationRulesTest extends TestCase
@@ -141,6 +142,27 @@ class ValidationRulesTest extends TestCase
 			'91234 1234' => false,
 			'(61 1234 1234' => false,
 			'61) 1234 1234' => false,
+		]);
+    }
+
+    public function test_hour_and_minute_validation_rule()
+    {
+		$rule = new HourAndMinute;
+
+		$this->assertValidationRuleForMultipleValues($rule, [
+			'00:00' => true,
+			'01:01' => true,
+			'23:59' => true,
+			'23:60' => false,
+			'24:00' => false,
+			'a0:00' => false,
+			'01:a0' => false,
+			'01.01' => false,
+			'-2:01' => false,
+			'01:-2' => false,
+			'001:01' => false,
+			'01:012' => false,
+			'4:4' => false,
 		]);
     }
 

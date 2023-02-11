@@ -304,6 +304,22 @@ request()->validate([
 //"abc def ghi" -> fails
 //"<p> abc def ghi </p>" -> fails
 ```
+
+- `HourAndMinute`
+```php
+//in controller
+use AugustoMoura\LaravelToolkit\Rules\HourAndMinute;
+
+request()->validate([
+	'message' => [new HourAndMinute],
+]);
+
+//"01:01" -> passes
+//"23:59" -> passes
+//"24:00" -> fails
+//"4:0" -> fails
+//"1200" -> fails
+```
 </details>
 
 <details>
