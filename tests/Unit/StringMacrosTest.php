@@ -43,6 +43,21 @@ class StringMacrosTest extends TestCase
 		$this->testStringMacroForArray('superTrim', $inputAndExpected);
 	}
 
+    public function test_remove_excess_whitespaces()
+    {
+        $multiLineString = "abc    
+                def";
+
+		$inputAndExpected = [
+			'     abc    def    ' => ' abc def ',
+			'abc def' => 'abc def',
+			$multiLineString => 'abc def',
+			"abc    \n\n\t\t    def" => 'abc def',
+		];
+
+		$this->testStringMacroForArray('removeExcessWhitespaces', $inputAndExpected);
+	}
+
     public function test_word_wrap_without_breaking_words()
     {
         $inputAndExpected = [
@@ -84,5 +99,4 @@ class StringMacrosTest extends TestCase
 			$this->assertEquals($expected, $arrayParts);
 		}
 	}
-
 }

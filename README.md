@@ -189,6 +189,13 @@ Str::wordWrapWithoutBreakingWords('1 2 12345', 5);
 Str::wordWrapWithoutBreakingWords('123456 12345', 5);
 // \LengthException thrown
 ```
+
+- `removeExcessWhitespaces`
+```php
+Str::removeExcessWhitespaces('     abc     def    ');
+Str::of("   abc  \n\t  def  ")->removeExcessWhitespaces();
+//' abc def '
+```
 </details>
 
 <details>

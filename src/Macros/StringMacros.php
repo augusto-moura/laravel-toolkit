@@ -16,10 +16,14 @@ class StringMacros
 					->replace('-', ' ')
 					->title();
 			},
+
 			'superTrim' => function($string){
 				return trim($string, " \t\n\r\0\x0B\xC2\xA0");
 			},
-			
+
+			'removeExcessWhitespaces' => function($string){
+				return preg_replace('/\s+/', ' ', $string);
+			},
 		];
 
 		foreach($macrosWithNoParameter as $macroName => $macroFunction){
