@@ -344,19 +344,6 @@ request()->validate([
 </details>
 
 <details>
-<summary>Helper classes</summary>
-
-- `ViaCepAPI`
-```php
-use AugustoMoura\LaravelToolkit\Helpers\ViaCepAPI;
-
-$viaCepAPI = new ViaCepAPI;
-$addressObject = $viaCepApi->buscarCep('70100000');
-//EnderecoViaCep: {"cep": "70100-000","logradouro": "Praça dos Três Poderes","complemento": "","bairro": "Zona Cívico-Administrativa","localidade": "Brasília","uf": "DF","ibge": "5300108","gia": "","ddd": "61","siafi": "9701"}
-```
-</details>
-
-<details>
 <summary>Mailables</summary>
 
 - `SimpleEmail`
@@ -394,5 +381,31 @@ Mail::to('example@email.com')->queue(new SimpleEmail(
 @cannot('edit', $post) 
 	You cannot edit the post: {{ $policyResponse->message() }}
 @endcannot
+```
+</details>
+
+<details>
+<summary>Helper classes</summary>
+
+- `ViaCepAPI`
+```php
+use AugustoMoura\LaravelToolkit\Helpers\ViaCepAPI;
+
+$viaCepAPI = new ViaCepAPI;
+$addressObject = $viaCepApi->buscarCep('70100000');
+//EnderecoViaCep: {"cep": "70100-000","logradouro": "Praça dos Três Poderes","complemento": "","bairro": "Zona Cívico-Administrativa","localidade": "Brasília","uf": "DF","ibge": "5300108","gia": "","ddd": "61","siafi": "9701"}
+```
+</details>
+
+<details>
+<summary>Value Objects</summary>
+
+- `Cpf`
+```php
+$cpf = new Cpf('40101887078');
+$cpf->formatado(); //401.018.870-78
+$cpf->apenasNumeros(); //40101887078
+
+$cpf = new Cpf('not a cpf string'); //throws \InvalidArgumentException
 ```
 </details>
