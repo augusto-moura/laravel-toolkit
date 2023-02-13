@@ -363,3 +363,29 @@ Mail::to('example@email.com')->queue(new SimpleEmail(
 ));
 ```
 </details>
+
+<details>
+<summary>Blade directives</summary>
+
+- `@can` (supercharges `@can` with policy info)
+```blade
+@can('edit', $post) 
+	Success: {{ $policyMessage }}
+@endcan
+<br>
+@can('edit', $post) 
+	You can edit the post: {{ $policyResponse->message() }}
+@endcannot
+```
+
+- `@cannot` (supercharges `@cannot` with policy info)
+```blade
+@cannot('edit', $post) 
+	Error: {{ $policyMessage }}
+@endcan
+<br>
+@cannot('edit', $post) 
+	You cannot edit the post: {{ $policyResponse->message() }}
+@endcannot
+```
+</details>

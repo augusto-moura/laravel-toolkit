@@ -1,6 +1,7 @@
 <?php
 namespace AugustoMoura\LaravelToolkit\Providers;
 
+use AugustoMoura\LaravelToolkit\Blade\BladeDirectives;
 use AugustoMoura\LaravelToolkit\Macros\CollectionMacros;
 use AugustoMoura\LaravelToolkit\Macros\QueryBuilderMacros;
 use AugustoMoura\LaravelToolkit\Macros\StringMacros;
@@ -20,5 +21,7 @@ class LaravelToolkitServiceProvider extends ServiceProvider
 		QueryBuilderMacros::registerMacros();
 		TestResponseMacros::registerMacros();
 		StringMacros::registerMacros();
+
+		BladeDirectives::registerBladeDirectives();
 	}
 }
