@@ -2,6 +2,7 @@
 
 use Orchestra\Testbench\TestCase;
 use AugustoMoura\LaravelToolkit\Rules\Cpf;
+use AugustoMoura\LaravelToolkit\Rules\Cep;
 use AugustoMoura\LaravelToolkit\Rules\MaxCharactersInHtml;
 use AugustoMoura\LaravelToolkit\Rules\MaxWordsInHtml;
 use AugustoMoura\LaravelToolkit\Rules\HtmlNotEmpty;
@@ -26,6 +27,22 @@ class ValidationRulesTest extends TestCase
 			'401.1018.870-78' => false,
 			'401.018.2870-78' => false,
 			'401.018.870-878' => false,
+		]);
+    }
+
+	public function test_cep_validation_rule()
+    {
+		$rule = new Cep;
+
+		$this->assertValidationRuleForMultipleValues($rule, [
+			'12345-123' => true,
+			'00001-001' => true,
+			'1234-001' => false,
+			'123456-001' => false,
+			'12345-12' => false,
+			'12345-1234' => false,
+			'12345123' => false,
+			'1234H-123' => false,
 		]);
     }
 

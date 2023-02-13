@@ -260,6 +260,20 @@ request()->validate([
 //"401.018.870-789" -> fails
 ```
 
+- `Cep`
+```php
+//in controller
+use AugustoMoura\LaravelToolkit\Rules\Cep;
+
+request()->validate([
+	'cep' => [new Cep],
+]);
+
+//"12345-123" -> passes
+//"1234H-123" -> fails
+//"12345123" -> fails
+```
+
 - `HtmlNotEmpty`
 ```php
 //in controller
