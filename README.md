@@ -441,6 +441,21 @@ $viaCepAPI = new ViaCepAPI;
 $addressObject = $viaCepApi->buscarCep('70100000');
 //EnderecoViaCep: {"cep": "70100-000","logradouro": "Praça dos Três Poderes","complemento": "","bairro": "Zona Cívico-Administrativa","localidade": "Brasília","uf": "DF","ibge": "5300108","gia": "","ddd": "61","siafi": "9701"}
 ```
+
+- `LaravelToolkit` (general helper functions)
+```php
+use AugustoMoura\LaravelToolkit\Helpers\LaravelToolkit;
+
+$var = [
+	'maxValue' => 123,
+	'phones' => [
+		'12345678',
+		'98764532',
+	],
+]
+$varAsString = LaravelToolkit::exportVar($var);
+//[maxValue: 123 | phones: ["1234567" | "98764532"]]
+```
 </details>
 
 <details>
