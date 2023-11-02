@@ -234,6 +234,35 @@ User::query()
 </details>
 
 <details>
+<summary>Test Traits</summary>
+
+- `MakesAssertionsForValidationRules`
+```php
+$rule = new Cpf; //implements Illuminate\Contracts\Validation\Rule interface
+
+$this->assertValidationRule(
+	$rule,
+	'40101887078',
+	true
+);
+
+$this->assertValidationRuleForMultipleValues(
+	$rule, 
+	[
+		'40101887078' => true,
+		'401.018.870-78' => true,
+		'00000000000' => false,
+		'000.000.000-00' => false,
+		'4010.018.870-78' => false,
+		'401.1018.870-78' => false,
+		'401.018.2870-78' => false,
+		'401.018.870-878' => false,
+	]
+);
+```
+</details>
+
+<details>
 <summary>TestResponse Macros</summary>
 
 - `assertContentHtmlMatchesSelector`
