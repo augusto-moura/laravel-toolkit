@@ -234,7 +234,7 @@ User::query()
 </details>
 
 <details>
-<summary>Test Traits</summary>
+<summary>Traits for test classes</summary>
 
 - `MakesAssertionsForValidationRules`
 ```php
@@ -258,6 +258,23 @@ $this->assertValidationRuleForMultipleValues(
 		'401.018.2870-78' => false,
 		'401.018.870-878' => false,
 	]
+);
+```
+
+- `MakesAssertionsForObjects`
+```php
+$this->assertObjectHasAttributes($personObject, [
+	'name' => 'John Doe',
+	'region_id' => 2,
+]);
+```
+
+- `MakesAssertionsForStrings`
+```php
+$this->assertEqualsNormalizingSpaces(
+	'abcd     
+efgh ijkl',
+	'abcd efgh ijkl'
 );
 ```
 </details>
