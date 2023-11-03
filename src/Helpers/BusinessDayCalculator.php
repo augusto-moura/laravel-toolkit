@@ -24,6 +24,7 @@ class BusinessDayCalculator
     /** @var Collection<Carbon> */
     private $holidays;
 	
+	//TODO: add conditions for freeDays. e.g.: some days count as free day only if passed variable contains 'worksOnSaturday' => true.
     /** @var Collection<Carbon> */
     private $freeDays;
 
@@ -58,7 +59,7 @@ class BusinessDayCalculator
     }
     
     /**
-     * @param iterable<Carbon> $freeDays Array or collection of free days that dose not repeat.
+     * @param iterable<Carbon> $freeDays Array or collection of free days that do not repeat.
      *
      * @return $this
      */
@@ -68,6 +69,8 @@ class BusinessDayCalculator
         $this->freeDays = $freeDays;
 		return $this;
     }
+	
+	//TODO: setFreeDaysFromTable
 
     /**
      * @return Collection<Carbon>
@@ -97,6 +100,8 @@ class BusinessDayCalculator
         }
         return $this->freeWeekDays;
     }
+	
+	//----------
 
     private function determineSign($x) : int
 	{
