@@ -1,7 +1,7 @@
 <?php
 namespace AugustoMoura\LaravelToolkit\Helpers;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
@@ -22,14 +22,21 @@ class BusinessDayCalculator
     const FREE_DAY_FORMAT = 'Y-m-d';
     
     /** @var Collection<Carbon> */
-    private $holidays = collect([]);
+    private $holidays;
 	
     /** @var Collection<Carbon> */
-    private $freeDays = collect([]);
+    private $freeDays;
 
     /** @var Collection<int> */
-    private $freeWeekDays = collect([self::SATURDAY, self::SUNDAY]);
+    private $freeWeekDays;
     
+	function __construct()
+	{
+		$this->holidays = collect([]);
+		$this->freeDays = collect([]);
+		$this->freeWeekDays = collect([self::SATURDAY, self::SUNDAY]);
+	}
+
     /**
      * @param iterable<Carbon> $holidays Array or collection of holidays that repeats each year. (Only month and date is used to match).
      *
@@ -104,7 +111,7 @@ class BusinessDayCalculator
 
     public function getBusinessDays(Carbon $startDate, int $amount) : Collection
 	{
-        if ($amount === 0 || is_nan($amount)) { return collect([$date]); }
+        if ($amount === 0 || is_nan($amount)) { return collect([$startDate]); }
 
         $dates = collect([]);
         $sign = $this->determineSign($amount);

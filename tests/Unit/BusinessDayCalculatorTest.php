@@ -3,14 +3,14 @@ namespace Tests;
 
 use AugustoMoura\LaravelToolkit\Helpers\BusinessDayCalculator as Calculator;
 use Orchestra\Testbench\TestCase;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 class BusinessDayCalculatorTest extends TestCase
 {
     /** @var Calculator */
     private $calculator;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->calculator = new Calculator();
     }
@@ -49,12 +49,9 @@ class BusinessDayCalculatorTest extends TestCase
 
         $response = $this->calculator->addBusinessDays($startDate, $howManyDays);
 
-        $this->assertEquals($response, $expected, $message);
+        $this->assertEquals($response->format('Y-m-d'), $expected->format('Y-m-d'), $message);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testTooManyBusinessDaysException()
     {
         $nonBusinessDays = [
@@ -68,8 +65,12 @@ class BusinessDayCalculatorTest extends TestCase
         ];
 
         $this->calculator->setFreeWeekDays($nonBusinessDays);
-        $this->calculator->addBusinessDays($date, 1);
+
+		$this->expectException(\InvalidArgumentException::class);
+        $this->calculator->addBusinessDays(now(), 1);
     }
+
+	//TODO: testGetBusinessDaysBetween
 
     public function testThatPassedParameterIsNotChangedByReferenceInSut()
     {

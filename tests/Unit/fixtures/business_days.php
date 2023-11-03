@@ -1,6 +1,7 @@
 <?php
 
 use AugustoMoura\LaravelToolkit\Helpers\BusinessDayCalculator as Calculator;
+use Illuminate\Support\Carbon;
 
 return [
     [
