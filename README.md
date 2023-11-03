@@ -456,6 +456,30 @@ $var = [
 $varAsString = LaravelToolkit::exportVar($var);
 //[maxValue: 123 | phones: ["1234567" | "98764532"]]
 ```
+
+- `BusinessDayCalculator`
+```php
+use AugustoMoura\LaravelToolkit\Helpers\BusinessDayCalculator;
+use Illuminate\Support\Carbon;
+
+$calculator = (new BusinessDayCalculator)
+	->setFreeDays([
+		new Carbon('2020-12-26'), //day after Christmas, only applies for the year 2020
+	])
+	->setHolidays([
+		new Carbon('2020-12-25'), //Christmas, applies for all years.
+	])
+	->setFreeWeekDays([
+		BusinessDayCalculator::SATURDAY,
+		BusinessDayCalculator::SUNDAY,
+	]);
+
+$endDate = $calculator->addBusinessDays(
+	new Carbon('2014-07-25'), //friday
+    1
+);
+//Carbon('2014-07-28') (monday)
+```
 </details>
 
 <details>
