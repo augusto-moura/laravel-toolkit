@@ -1,16 +1,16 @@
 {
     "name": "augusto-moura/laravel-toolkit",
-    "description": "Adds macros to various Laravel classes and provides helper classes, as well as supercharged base classes.",
+    "description": "Adds macros to various Laravel classes and provides helper classes, as well as supercharged utility classes.",
     "type": "library",
 	"license": "MIT",
 	"require": {
-		"php": ">= 7.3",
-		"laravel/framework": "^8.0|^9.0",
+		"php": ">= 8.2",
+		"laravel/framework": "^10.0|^11.0",
         "wa72/htmlpagedom": "2.0.0",
-        "guzzlehttp/guzzle": "^7.5"
+        "guzzlehttp/guzzle": "^7.8"
 	},
     "require-dev": {
-        "orchestra/testbench": "^6.25"
+        "orchestra/testbench": "^8.15"
     },
 	"autoload": {
 		"psr-4": {

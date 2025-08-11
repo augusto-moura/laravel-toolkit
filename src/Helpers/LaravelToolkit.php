@@ -1,6 +1,8 @@
 <?php
 namespace AugustoMoura\LaravelToolkit\Helpers;
 
+use Illuminate\Support\Collection;
+
 class LaravelToolkit
 {
 	public static function exportVar($objectOrArray) : string
