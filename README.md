@@ -389,6 +389,40 @@ request()->validate([
 ```
 </details>
 
+- `MoneyAsString`
+```php
+//in controller
+use AugustoMoura\LaravelToolkit\Rules\MoneyAsString;
+
+request()->validate([
+	'cost' => [new MoneyAsString],
+]);
+
+// 123.456,78 -> passes
+// 123,45 -> passes
+// 0,12 -> passes
+// 0,00 -> passes
+// 1234.567,89 -> fails
+// 56789 -> fails
+
+request()->validate([
+	'cost' => [
+		new MoneyAsString(
+			thousandSeparator: ' ',
+			decimalSeparator: '.',
+		),
+	],
+]);
+
+// 123 456.78 -> passes
+// 123.456,78 -> fails
+
+//To translate the validation message, add in resources/lang/{locale}/validation.php:
+'money_as_string' => 'O número deve seguir o formato: :example .',
+
+```
+</details>
+
 <details>
 <summary>Mailables</summary>
 

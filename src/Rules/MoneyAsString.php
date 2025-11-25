@@ -40,7 +40,14 @@ class MoneyAsString implements ValidationRule
 		$isStringValid = isset($matches[0]);
 		
         if ( ! $isStringValid) {
-            $fail("The number must follow the following format: 123{$this->thousandSeparator}456{$this->decimalSeparator}78 .");
+			$example = "123{$this->thousandSeparator}456{$this->decimalSeparator}78";
+			$message = __('validation.money_as_string', ['example' => $example]);
+
+			if($message == 'validation.money_as_string'){
+				$message = "The number must follow the following format: {$example} .";
+			}
+
+            $fail($message);
         }
     }
 }
