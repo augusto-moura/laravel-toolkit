@@ -8,6 +8,7 @@ use AugustoMoura\LaravelToolkit\Rules\MaxWordsInHtml;
 use AugustoMoura\LaravelToolkit\Rules\HtmlNotEmpty;
 use AugustoMoura\LaravelToolkit\Rules\BrazilPhoneNumber;
 use AugustoMoura\LaravelToolkit\Rules\HourAndMinute;
+use AugustoMoura\LaravelToolkit\Rules\MoneyAsString;
 use AugustoMoura\LaravelToolkit\Traits\MakesAssertionsForValidationRules;
 
 class ValidationRulesTest extends TestCase
@@ -180,6 +181,28 @@ class ValidationRulesTest extends TestCase
 			'001:01' => false,
 			'01:012' => false,
 			'4:4' => false,
+		]);
+    }
+
+    public function test_money_as_string_validation_rule()
+    {
+		$rule = new MoneyAsString;
+
+		$this->assertValidationRuleForMultipleValues($rule, [
+			'123.456,78' => true,
+			'123,45' => true,
+			'0,12' => true,
+			'0,00' => true,
+			'1234.567,89' => false,
+			'56789' => false,
+			'56.789,1' => false,
+			'56789,' => false,
+			',12' => false,
+			'abc,12' => false,
+			'12,abc' => false,
+			'123.4,12' => false,
+			'12,-1' => false,
+			'-1,12' => false,
 		]);
     }
 
