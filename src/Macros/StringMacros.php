@@ -17,6 +17,42 @@ class StringMacros
 					->title();
 			},
 
+			//Make the first letter of each word capitalized, but preserve words like 'of','and', etc.
+			'capitalizedName' => function($string){
+				return (string) Str::of($string)
+					->explode(' ')
+					->map(function($word){
+						$wordTitleCase = (string)str($word)
+							->title()
+							->trim()
+						;
+						return match($wordTitleCase){
+							'De' => 'de',
+							'Da' => 'da',
+							'Do' => 'do',
+							'Di' => 'di',
+							'Das' => 'das',
+							'Dos' => 'dos',
+							'E' => 'e',
+							'Com' => 'com',
+							'Em' => 'em',
+							'No' => 'no',
+							'Na' => 'na',
+							'Nos' => 'nos',
+							'Nas' => 'nas',
+							'A' => 'a',
+							'O' => 'o',
+							'The' => 'the',
+							'Of' => 'of',
+							'And' => 'and',
+							'Or' => 'or',
+							default => $wordTitleCase,
+						};
+					})
+					->join(' ')
+				;
+			},
+
 			'superTrim' => function($string){
 				return trim($string, " \t\n\r\0\x0B\xC2\xA0");
 			},

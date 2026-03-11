@@ -75,6 +75,25 @@ class StringMacrosTest extends TestCase
 		Str::wordWrapWithoutBreakingWords('123456 12345', 5);
 	}
 
+    public function test_capitalized_name()
+    {
+        $inputAndExpected = [
+			'JOÃO DA SILVA' => 'João da Silva',
+			'joão da silva' => 'João da Silva',
+			'JOÃO DE BARRO' => 'João de Barro',
+			'joão de barro' => 'João de Barro',
+			'JOÃO DOS SANTOS' => 'João dos Santos',
+			'joão dos santos' => 'João dos Santos',
+			'joão e maria' => 'João e Maria',
+			'joão e maria da silva' => 'João e Maria da Silva',
+			'Dario da Silva' => 'Dario da Silva',
+			'dario da silva' => 'Dario da Silva',
+			'dosimer do polanski' => 'Dosimer do Polanski',
+		];
+
+		$this->testStringMacroForArray('capitalizedName', $inputAndExpected);
+	}
+
 	private function testStringMacroForArray(string $macro, array $inputAndExpected)
 	{
 		foreach($inputAndExpected as $input => $expected) {
