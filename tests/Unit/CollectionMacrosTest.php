@@ -228,4 +228,31 @@ class CollectionMacrosTest extends TestCase
         $this->assertEquals($expected, $collection->implodeWithDiffLastSeparator([', ', ' and ']));
 	}
 
+	public function test_key_by_label()
+	{
+		$collection = collect([
+			['id' => 1, 'name' => 'Apple'],
+			['id' => 2, 'name' => 'Banana'],
+			['id' => 3, 'name' => 'Apple'],
+			['id' => 4, 'name' => 'Orange'],
+			['id' => 5, 'name' => 'Apple'],
+		]);
+
+		$keyed = $collection->keyByLabel(fn($item) => $item['name']);
+
+		$this->assertEquals([
+			'Apple' => ['id' => 1, 'name' => 'Apple'],
+			'Banana' => ['id' => 2, 'name' => 'Banana'],
+			'Apple 2' => ['id' => 3, 'name' => 'Apple'],
+			'Orange' => ['id' => 4, 'name' => 'Orange'],
+			'Apple 3' => ['id' => 5, 'name' => 'Apple'],
+		], $keyed->toArray());
+
+		$this->assertCount(5, $keyed);
+		$this->assertTrue($keyed->has('Apple'));
+		$this->assertTrue($keyed->has('Apple 2'));
+		$this->assertTrue($keyed->has('Apple 3'));
+	}
+
+
 }

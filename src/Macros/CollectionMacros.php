@@ -2,6 +2,7 @@
 
 namespace AugustoMoura\LaravelToolkit\Macros;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -127,6 +128,19 @@ class CollectionMacros
 				}
 
 				return \Illuminate\Support\Str::replaceLast($separatorUntilLast, $separatorLast, $imploded);
+			},
+
+			'keyByLabel' => function(Closure $fnGetLabel){
+				$counts = [];
+				/** @var Collection $this */
+				return $this->mapWithKeys(function ($item, $key) use (&$counts, $fnGetLabel) {
+					$label = $fnGetLabel($item);
+
+					$counts[$label] = ($counts[$label] ?? 0) + 1;
+					$finalLabel = $counts[$label] > 1 ? "{$label} {$counts[$label]}" : $label;
+
+					return [$finalLabel => $item];
+				});
 			},
 		];
 
