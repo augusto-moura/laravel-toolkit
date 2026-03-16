@@ -94,6 +94,22 @@ class StringMacrosTest extends TestCase
 		$this->testStringMacroForArray('capitalizedName', $inputAndExpected);
 	}
 
+    public function test_dot_notation()
+    {
+        $inputAndExpected = [
+			'' => '',
+			'a' => 'a',
+			'a.b' => 'a.b',
+			'a[b]' => 'a.b',
+			'a[b].c' => 'a.b.c',
+			'a[b].c[d]' => 'a.b.c.d',
+			'a[b][c][d]' => 'a.b.c.d',
+			'a[b][c].d' => 'a.b.c.d',
+		];
+
+		$this->testStringMacroForArray('dotNotation', $inputAndExpected);
+	}
+
 	private function testStringMacroForArray(string $macro, array $inputAndExpected)
 	{
 		foreach($inputAndExpected as $input => $expected) {

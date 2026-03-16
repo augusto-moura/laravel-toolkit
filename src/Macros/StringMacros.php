@@ -60,6 +60,10 @@ class StringMacros
 			'removeExcessWhitespaces' => function($string){
 				return preg_replace('/\s+/', ' ', $string);
 			},
+
+			'dotNotation' => function($string){
+				return preg_replace('/\[([^\]]+)\]/', '.$1', $string);
+			},
 		];
 
 		foreach($macrosWithNoParameter as $macroName => $macroFunction){
