@@ -8,7 +8,7 @@ class BrazilPhoneNumber implements Rule
 {
     public function passes($attribute, $value)
     {
-		return preg_match('/^(\+55|55)?\s?(((0)?[0-9]{2})|(\((0)?[0-9]{2}\)))\s?([1-9]{1})?\s?[0-9]{4}\s?[0-9]{4}$/', $value);
+		return preg_match('/^(\+55|55)?\s?(((0)?[0-9]{2})|(\((0)?[0-9]{2}\)))\s?([1-9]{1})?\s?[0-9]{4}[\s\-]?[0-9]{4}$/', $value);
     }
 
     public function message()
