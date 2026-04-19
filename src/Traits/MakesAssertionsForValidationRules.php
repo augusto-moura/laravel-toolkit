@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 trait MakesAssertionsForValidationRules 
 {
-	private function assertValidationRule(Rule $rule, $value, bool $shouldPass = true)
+	protected function assertValidationRule(Rule $rule, $value, bool $shouldPass = true)
 	{
 		if($shouldPass){
 			$this->assertTrue(
@@ -23,7 +23,7 @@ trait MakesAssertionsForValidationRules
 		}
 	}
 
-	private function assertLaravel11ValidationRule(ValidationRule $rule, $value, bool $shouldPass = true)
+	protected function assertLaravel11ValidationRule(ValidationRule $rule, $value, bool $shouldPass = true)
 	{
 		$passed = true;
 		$rule->validate(
@@ -52,14 +52,16 @@ trait MakesAssertionsForValidationRules
 	 * @param Rule $rule
 	 * @param array<mixed,bool> $inputsAndResults
 	 */
-	private function assertValidationRuleForMultipleValues(Rule|ValidationRule $rule, array $inputsAndResults)
+	protected function assertValidationRuleForMultipleValues(Rule|ValidationRule $rule, array $inputsAndResults)
 	{
 		foreach($inputsAndResults as $input => $result){
+			$treatedInput = is_numeric($input) ? (string) $input : $input;
+
 			if($rule instanceof Rule){
-				$this->assertValidationRule($rule, $input, $result);
+				$this->assertValidationRule($rule, $treatedInput, $result);
 			}
 			if($rule instanceof ValidationRule){
-				$this->assertLaravel11ValidationRule($rule, $input, $result);
+				$this->assertLaravel11ValidationRule($rule, $treatedInput, $result);
 			}
 		}
 	}
