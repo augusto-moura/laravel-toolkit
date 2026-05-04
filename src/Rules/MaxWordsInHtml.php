@@ -2,25 +2,33 @@
 
 namespace AugustoMoura\LaravelToolkit\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 
-class MaxWordsInHtml implements Rule
+class MaxWordsInHtml implements ValidationRule
 {
-	private $max;
+	private int $max;
 
 	public function __construct($max)
 	{
 		$this->max = (int) $max;
 	}
 
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+		if ($value === null || $value === '') {
+            return;
+        }
+
 		//add divs for manipulation
 		$element = HtmlPageCrawler::create("<div>{$value}</div>"); 
 		$text = $element->text();
 		$wordCount = self::countWords($text);
-		return $wordCount <= $this->max;
+
+		if ($wordCount > $this->max) {
+            $fail("O campo :attribute não pode conter mais de {$this->max} palavras.");
+        }
     }
 
 	public static function countWords(string $text) : int
@@ -34,9 +42,4 @@ class MaxWordsInHtml implements Rule
 			->count()
 		;
 	}
-
-    public function message()
-    {
-        return "O campo :attribute não pode conter mais de {$this->max} palavras.";
-    }
 }

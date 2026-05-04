@@ -2,20 +2,22 @@
 
 namespace AugustoMoura\LaravelToolkit\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 /**
  * Validates a CPF (Brazilian equivalent of the Social Security Number).
  */
-class Cpf implements Rule
+class Cpf implements ValidationRule
 {
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
 		// If it's empty, returns false. , fills with zeroes to the left up to 11 digits, checks if the number of digits is equal to 11. Checks if any of the invalid sequences below has been entered. If so, returns false. Otherwise, calculates the verification digits to check if the CPF is valid and returns true
 		
         // Checks if a number has been entered.
 		if(empty($value)) {
-			return false;
+			$fail('O campo :attribute deve conter um CPF válido.');
+            return;
 		}
 
 		// Remove possible mask
@@ -24,7 +26,8 @@ class Cpf implements Rule
 		
 		// checks if the number of digits is equal to 11 
 		if (strlen($value) != 11) {
-			return false;
+			$fail('O campo :attribute deve conter um CPF válido.');
+            return;
 		}
 
 		// check if digits are not all the same
@@ -41,7 +44,8 @@ class Cpf implements Rule
 			'99999999999',
 		]);
 		if ($isValueInBlacklist) {
-			return false;
+			$fail('O campo :attribute deve conter um CPF válido.');
+            return;
 		}
 
 		// Calculate the verification digits
@@ -51,15 +55,9 @@ class Cpf implements Rule
 			}
 			$d = ((10 * $d) % 11) % 10;
 			if ($value[$c] != $d) {
-				return false;
+				$fail('O campo :attribute deve conter um CPF válido.');
+                return;
 			}
 		}
-
-		return true;
-    }
-
-    public function message()
-    {
-        return 'O campo :attribute deve conter um CPF válido.';
     }
 }

@@ -2,14 +2,17 @@
 
 namespace AugustoMoura\LaravelToolkit\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class HtmlNotEmpty implements Rule
+class HtmlNotEmpty implements ValidationRule
 {
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-		if($value === null)
-			return false;
+		if($value === null) {
+			$fail('O texto não pode estar vazio ou conter apenas espaços em branco.');
+            return;
+        }
 
 		$value = strtr($value, [
 			'<br>' => '',
@@ -17,11 +20,8 @@ class HtmlNotEmpty implements Rule
 			'<br />' => ''
 		]);
 		
-		return trim(strip_tags($value)) != '';
-    }
-
-    public function message()
-    {
-        return 'O texto não pode estar vazio ou conter apenas espaços em branco.';
+		if (trim(strip_tags($value)) == '') {
+            $fail('O texto não pode estar vazio ou conter apenas espaços em branco.');
+        }
     }
 }

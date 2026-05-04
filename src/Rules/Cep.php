@@ -2,12 +2,13 @@
 
 namespace AugustoMoura\LaravelToolkit\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 /**
  * Validates a CEP (Brazilian zip code).
  */
-class Cep implements Rule
+class Cep implements ValidationRule
 {
 	function __construct(
 		public bool $exigirSeparador = true
@@ -16,23 +17,26 @@ class Cep implements Rule
 		//
 	}
 
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+		if( ! $value){
+			return;
+		}
+
 		$cep = str($value)->trim()
 			->when( ! $this->exigirSeparador, fn($str) =>
 				$str->replaceMatches('/\D/', '')
 			)
 			->toString()
 		;
-		return
-			$this->exigirSeparador ?
+
+		$isValid = $this->exigirSeparador ?
 			preg_match("/^[0-9]{5}-[0-9]{3}$/", $cep) :
 			preg_match("/^[0-9]{8}$/", $cep)
 		;
-    }
 
-    public function message()
-    {
-        return 'O campo :attribute deve ser um CEP válido (XXXXX-XXX).';
+        if (!$isValid) {
+            $fail('O campo :attribute deve ser um CEP válido (XXXXX-XXX).');
+        }
     }
 }

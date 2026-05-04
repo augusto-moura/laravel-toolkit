@@ -2,29 +2,32 @@
 
 namespace AugustoMoura\LaravelToolkit\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Wa72\HtmlPageDom\HtmlPageCrawler;
 
-class MaxCharactersInHtml implements Rule
+class MaxCharactersInHtml implements ValidationRule
 {
-	private $max;
+	private int $max;
 	
 	public function __construct($max)
 	{
 		$this->max = (int) $max;
 	}
 
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+		if ($value === null || $value === '') {
+            return;
+        }
+
 		//add divs for manipulation
 		$element = HtmlPageCrawler::create("<div>{$value}</div>");
 		$texto = $element->text();
 		$characterCount = strlen($texto);
-		return $characterCount <= $this->max;
-    }
-
-    public function message()
-    {
-        return "O campo :attribute não pode conter mais de {$this->max} caracteres.";
+		
+        if ($characterCount > $this->max) {
+            $fail("O campo :attribute não pode conter mais de {$this->max} caracteres.");
+        }
     }
 }

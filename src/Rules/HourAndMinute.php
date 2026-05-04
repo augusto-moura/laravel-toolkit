@@ -2,23 +2,29 @@
 
 namespace AugustoMoura\LaravelToolkit\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class HourAndMinute implements Rule
+class HourAndMinute implements ValidationRule
 {
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-		if(!preg_match('/^[0-9]{2}\:[0-9]{2}$/', $value))
-			return false;
+		if( ! $value){
+			return;
+		}
+
+		if(!preg_match('/^[0-9]{2}\:[0-9]{2}$/', $value)) {
+			$fail('O(a) :attribute deve conter horas e minutos no formato HH:MM.');
+            return;
+        }
 
 		list($hours, $minutes) = explode(':', $value);
 
-		return intval($hours) >= 0 && intval($hours) <= 23
+		$isValid = intval($hours) >= 0 && intval($hours) <= 23
 			&& intval($minutes) >= 0 && intval($minutes) <= 59;
-    }
-
-    public function message()
-    {
-        return 'O(a) :attribute deve conter horas e minutos no formato HH:MM.';
+            
+        if (!$isValid) {
+            $fail('O(a) :attribute deve conter horas e minutos no formato HH:MM.');
+        }
     }
 }

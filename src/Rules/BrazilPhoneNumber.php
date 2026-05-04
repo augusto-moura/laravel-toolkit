@@ -2,17 +2,19 @@
 
 namespace AugustoMoura\LaravelToolkit\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class BrazilPhoneNumber implements Rule
+class BrazilPhoneNumber implements ValidationRule
 {
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-		return preg_match('/^(\+55|55)?\s?(((0)?[0-9]{2})|(\((0)?[0-9]{2}\)))\s?([1-9]{1})?\s?[0-9]{4}[\s\-]?[0-9]{4}$/', $value);
-    }
+		if( ! $value){
+			return;
+		}
 
-    public function message()
-    {
-        return 'O campo :attribute precisa conter um número de telefone válido. Ex.: 061 91234 1234';
+        if (!preg_match('/^(\+55|55)?\s?(((0)?[0-9]{2})|(\((0)?[0-9]{2}\)))\s?([1-9]{1})?\s?[0-9]{4}[\s\-]?[0-9]{4}$/', $value)) {
+            $fail('O campo :attribute precisa conter um número de telefone válido. Ex.: 061 91234 1234');
+        }
     }
 }
