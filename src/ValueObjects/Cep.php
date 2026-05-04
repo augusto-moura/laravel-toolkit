@@ -12,9 +12,13 @@ class Cep
 		$this->apenasNumeros = preg_replace('/\D/', '', $cep);
 
 		$cepRule = new CepRule;
-		if( ! $cepRule->passes('cep', $this->formatado()) ){
-			throw new \InvalidArgumentException( "{$cep} não é um valor de CPF válido." );
-		}
+		$cepRule->validate(
+			'cep',
+			$this->formatado(),
+			function() use(&$passed){
+				throw new \InvalidArgumentException( "O CEP não é um valor de CEP válido." );
+			}
+		);
 	}
 
 	public function apenasNumeros() : string

@@ -12,9 +12,14 @@ class Cpf
 		$this->apenasNumeros = static::convertToApenasNumeros($cpf);
 
 		$cpfRule = new CpfRule;
-		if( ! $cpfRule->passes('cpf', $this->apenasNumeros) ){
-			throw new \InvalidArgumentException( "{$cpf} não é um valor de CPF válido." );
-		}
+
+		$cpfRule->validate(
+			'cpf',
+			$this->apenasNumeros,
+			function() use(&$passed){
+				throw new \InvalidArgumentException( "O CPF não é um valor de CPF válido." );
+			}
+		);
 	}
 
 	public function apenasNumeros() : string
