@@ -7,6 +7,7 @@ use AugustoMoura\LaravelToolkit\Rules\MaxCharactersInHtml;
 use AugustoMoura\LaravelToolkit\Rules\MaxWordsInHtml;
 use AugustoMoura\LaravelToolkit\Rules\HtmlNotEmpty;
 use AugustoMoura\LaravelToolkit\Rules\BrazilPhoneNumber;
+use AugustoMoura\LaravelToolkit\Rules\Cnpj;
 use AugustoMoura\LaravelToolkit\Rules\HourAndMinute;
 use AugustoMoura\LaravelToolkit\Rules\MoneyAsString;
 use AugustoMoura\LaravelToolkit\Traits\MakesAssertionsForValidationRules;
@@ -206,6 +207,57 @@ class ValidationRulesTest extends TestCase
 			'12,-1' => false,
 			'-1,12' => false,
 		]);
+    }
+
+	/**
+     * @dataProvider cnpjProvider
+     */
+	public function test_cnpj_rule(string $cnpj, bool $shoudPass)
+    {
+        $regra = new Cnpj;
+
+        $this->assertLaravel11ValidationRule(
+			$regra,
+			$cnpj, 
+            $shoudPass,
+        );
+    }
+
+	/**************************************************
+	***************************************************
+	****************** //MARK: Aux
+	***************************************************
+	***************************************************/
+
+	public static function cnpjProvider(): array
+    {
+        return [
+            // --- CNPJs Numéricos Antigos Válidos ---
+            'numérico antigo válido (formatado)'    => ['00.000.000/0001-91', true],
+            'numérico antigo válido (somente nums)' => ['00000000000191', true],
+            'outro numérico válido'                 => ['59.546.515/0001-34', true],
+
+            // --- CNPJs Alfanuméricos Novos Válidos ---
+            // A1B2C3D4E5F668 é um CNPJ matematicamente válido pela nova regra
+            'alfanumérico novo válido (formatado)'    => ['A1.B2C.3D4/E5F6-68', true],
+            'alfanumérico novo válido (somente alfa)' => ['A1B2C3D4E5F668', true],
+            'alfanumérico novo válido (caixa baixa)'  => ['a1.b2c.3d4/e5f6-68', true], // A regra deve tratar e validar
+
+            // --- Cenários Inválidos por Formato ou Tamanho ---
+            'tamanho menor que 14'       => ['1234567890123', false],
+            'tamanho maior que 14'       => ['123456789012345', false],
+            'caracteres especiais'       => ['A1.B2C.3D4/E5F@-68', false],
+            'dígito verificador letra 1' => ['A1B2C3D4E5F6A8', false], // Últimos 2 devem ser números
+            'dígito verificador letra 2' => ['A1B2C3D4E5F66B', false], // Últimos 2 devem ser números
+            
+            // --- Cenários Inválidos por Matemática (Dígitos Errados) ---
+            'numérico com dv errado'     => ['00.000.000/0001-92', false],
+            'alfanumérico com dv errado' => ['A1.B2C.3D4/E5F6-69', false],
+
+            // --- Cenários de Repetição (Opcional, se a regra prever bloqueio) ---
+            'sequencia de zeros'         => ['00000000000000', false],
+            'sequencia de uns'           => ['11111111111111', false],
+        ];
     }
 
 }
