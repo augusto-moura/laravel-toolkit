@@ -231,6 +231,16 @@ User::query()
 	->get();
 //select * from users where not ( *condition in local scope* )
 ``` 
+
+- `whereLikeInsensitive`
+```php
+User::query()
+	->whereLikeInsensitive('name', '%john%')
+	->get();
+//mysql: select * from users where name LIKE ? COLLATE utf8mb4_0900_ai_ci (['%john%'])
+//sqlsrv: select * from users where name COLLATE Latin1_General_CI_AI LIKE ? (['%john%'])
+//outros drivers: select * from users where "name" LIKE ? (['%john%'])
+``` 
 </details>
 
 <details>

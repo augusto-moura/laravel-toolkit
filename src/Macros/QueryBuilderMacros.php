@@ -19,6 +19,18 @@ class QueryBuilderMacros
 			'whereNot' => function($column, $value = null){
 				return $this->where($column, $value, null, 'and not');
 			},
+			'whereLikeInsensitive' => function($column, $value){
+				$driver = $this->getConnection()->getDriverName();
+
+				switch($driver){
+					case 'sqlsrv':
+						return $this->whereRaw("{$column} COLLATE Latin1_General_CI_AI LIKE ?", [$value]);
+					case 'mysql':
+						return $this->whereRaw("{$column} LIKE ? COLLATE utf8mb4_0900_ai_ci", [$value]);
+					default:
+						return $this->where($column, 'LIKE', $value);
+				}
+			},
 		];
 
 		foreach($macros as $macroName => $macroFunction){
