@@ -254,5 +254,38 @@ class CollectionMacrosTest extends TestCase
 		$this->assertTrue($keyed->has('Apple 3'));
 	}
 
+	public function test_move_first_to_end()
+	{
+		$this->assertEquals(
+			['b', 'c', 'a'],
+			collect(['a', 'b', 'c'])->moveFirstToEnd()->toArray()
+		);
+
+		$this->assertEquals(
+			[2, 3, 1],
+			collect(['x' => 1, 'y' => 2, 'z' => 3])->moveFirstToEnd()->toArray()
+		);
+
+		$this->assertEquals(
+			[1, 2, 4, 3],
+			collect([1, 2, 3, 4])->moveFirstToEnd(fn($item) => $item == 3)->toArray()
+		);
+
+		$this->assertEquals(
+			[2, 1, 3, 1],
+			collect([1, 2, 1, 3])->moveFirstToEnd(fn($item) => $item == 1)->toArray()
+		);
+
+		$this->assertEquals(
+			[1, 2, 3],
+			collect([1, 2, 3])->moveFirstToEnd(fn($item) => false)->toArray()
+		);
+
+		$this->assertEquals(
+			[],
+			collect([])->moveFirstToEnd()->toArray()
+		);
+	}
+
 
 }

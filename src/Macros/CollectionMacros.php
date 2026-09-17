@@ -142,6 +142,22 @@ class CollectionMacros
 					return [$finalLabel => $item];
 				});
 			},
+
+			'moveFirstToEnd' => function(?callable $callback = null){
+				/** @var Collection $this */
+				if($this->isEmpty())
+					return $this->values();
+
+				if($callback === null)
+					return $this->slice(1)->push($this->first())->values();
+
+				$key = $this->search(fn($item, $itemKey) => $callback($item, $itemKey));
+
+				if($key === false)
+					return $this->values();
+
+				return $this->except($key)->push($this->get($key))->values();
+			},
 		];
 
 		foreach($macros as $macroName => $macroFunction){
