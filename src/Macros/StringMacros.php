@@ -46,9 +46,23 @@ class StringMacros
 							'Of' => 'of',
 							'And' => 'and',
 							'Or' => 'or',
+							'Ii' => 'II',
+							'Iii' => 'III',
+							'Ti' => 'TI',
+							'Cfp' => 'CFP',
+							'Crps' => 'CRPs',
+							'Crp' => 'CRP',
 							default => $wordTitleCase,
 						};
 					})
+					->map(fn($word) => str($word)->swap([
+						'(A)' => '(a)',
+						'(As)' => '(as)',
+						'(O)' => '(o)',
+						'(Os)' => '(os)',
+						'(E)' => '(e)',
+						'(Es)' => '(es)',
+					]))
 					->join(' ')
 				;
 			},

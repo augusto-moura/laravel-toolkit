@@ -89,6 +89,17 @@ class StringMacrosTest extends TestCase
 			'Dario da Silva' => 'Dario da Silva',
 			'dario da silva' => 'Dario da Silva',
 			'dosimer do polanski' => 'Dosimer do Polanski',
+			'ASSESSOR II' => 'Assessor II',
+			'assessor III' => 'Assessor III',
+			'analista - ti - desenvolvimento' => 'Analista - TI - Desenvolvimento',
+			'CONSELHEIRO CFP' => 'Conselheiro CFP',
+			'CONSELHEIROS CRPS' => 'Conselheiros CRPs',
+			'CONSELHEIRO CRP' => 'Conselheiro CRP',
+			'Estagiária(O)' => 'Estagiária(o)',
+			'ESTAGIÁRIA(O)' => 'Estagiária(o)',
+			'ESTAGIÁRIAS(OS)' => 'Estagiárias(os)',
+			'ESTAGIÁRIO(A)' => 'Estagiário(a)',
+			'ESTAGIÁRIOS(AS)' => 'Estagiários(as)',
 		];
 
 		$this->testStringMacroForArray('capitalizedName', $inputAndExpected);
